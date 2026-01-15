@@ -11,7 +11,26 @@ model = pickle.load(open("habitability_model.pkl", "rb"))
 @app.route("/")
 def home():
     return render_template("index.html")
+@app.route("/predictor")
+def predictor():
+    return render_template("predictor.html")
+@app.route("/dashboard")
+def dashboard():
+    accuracy = 94
+    last_score = 0.78
+    predictions = [0.2, 0.35, 0.6, 0.78, 0.82]
 
+    return render_template(
+        "dashboard.html",
+        accuracy=accuracy,
+        last_score=last_score,
+        predictions=predictions
+    )
+
+
+@app.route("/about")
+def about():
+    return render_template("about.html")
 
 @app.route("/ui")
 def ui():

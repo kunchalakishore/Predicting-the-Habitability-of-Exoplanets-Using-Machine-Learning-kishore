@@ -1,39 +1,44 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Exoplanet Habitability Predictor</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <meta charset="UTF-8">
+  <title>ExoHabitAI</title>
+
+  <!-- MAIN CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
 </head>
 <body>
 
-<div class="container">
-    <h1>🌍 Exoplanet Habitability Predictor</h1>
-    <p class="subtitle">NASA-Inspired AI System</p>
+<!-- BACKGROUND -->
+<div class="stars"></div>
 
-    <form id="predictForm">
-        <label>Planet Temperature (z-score)</label>
-        <input type="number" step="any" id="planet_temp_z" required>
+<!-- NAVBAR -->
+<header class="navbar">
+  <div class="logo">☾ ExoHabitAI</div>
+  <nav>
+    <a href="/predictor">Predictor</a>
+    <a href="/dashboard">Dashboard</a>
+  </nav>
+</header>
 
-        <label>Planet Size (z-score)</label>
-        <input type="number" step="any" id="planet_size_z" required>
+<!-- HERO SECTION -->
+<section class="hero">
+  <div class="hero-text">
+    <h1>Discover <span>Habitable Worlds</span><br>Beyond Our Solar System</h1>
 
-        <label>Star Temperature (z-score)</label>
-        <input type="number" step="any" id="star_temp_z" required>
+    <p>
+      Using advanced machine learning algorithms to analyze exoplanet
+      data and predict habitability potential with high accuracy.
+    </p>
 
-        <label>Star Energy (z-score)</label>
-        <input type="number" step="any" id="star_energy_z" required>
-
-        <button type="submit">🔭 Predict Habitability</button>
-    </form>
-
-    <div id="result" class="result-box hidden">
-        <h2>Prediction Result</h2>
-        <p><strong>Habitability Score:</strong> <span id="score"></span></p>
-        <p><strong>Status:</strong> <span id="prediction"></span></p>
+    <div class="hero-buttons">
+      <a href="/predictor" class="btn primary">🚀 Start Prediction</a>
+      <a href="/dashboard" class="btn outline">📊 View Dashboard</a>
     </div>
-</div>
+  </div>
 
-<script src="{{ url_for('static', filename='script.js') }}"></script>
+  <div class="hero-planet"></div>
+</section>
+
 </body>
 </html>
