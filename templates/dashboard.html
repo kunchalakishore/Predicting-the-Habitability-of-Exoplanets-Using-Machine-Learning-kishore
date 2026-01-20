@@ -165,17 +165,15 @@ input[type=file] {
 </div>
 
 <script>
-const api = "http://127.0.0.1:5000";
-
 /* ================= FEATURE IMPORTANCE ================= */
-fetch(api+"/feature_importance")
-.then(r=>r.json())
-.then(d=>{
+fetch("/feature_importance")
+.then(r => r.json())
+.then(d => {
     Plotly.newPlot("featurePlot",[{
-        x:d.importance,
-        y:d.features,
-        type:"bar",
-        orientation:"h"
+        x: d.importance,
+        y: d.features,
+        type: "bar",
+        orientation: "h"
     }],{
         paper_bgcolor:"rgba(0,0,0,0)",
         plot_bgcolor:"rgba(0,0,0,0)",
@@ -184,12 +182,12 @@ fetch(api+"/feature_importance")
 });
 
 /* ================= SCORE DISTRIBUTION ================= */
-fetch(api+"/score_distribution")
-.then(r=>r.json())
-.then(scores=>{
+fetch("/score_distribution")
+.then(r => r.json())
+.then(scores => {
     Plotly.newPlot("distPlot",[{
-        x:scores,
-        type:"histogram"
+        x: scores,
+        type: "histogram"
     }],{
         paper_bgcolor:"rgba(0,0,0,0)",
         plot_bgcolor:"rgba(0,0,0,0)",
@@ -198,13 +196,13 @@ fetch(api+"/score_distribution")
 });
 
 /* ================= CORRELATION ================= */
-fetch(api+"/correlations")
-.then(r=>r.json())
-.then(d=>{
+fetch("/correlations")
+.then(r => r.json())
+.then(d => {
     Plotly.newPlot("corrPlot",[{
-        x:d.st_teff,
-        y:d.score,
-        mode:"markers"
+        x: d.st_teff,
+        y: d.score,
+        mode: "markers"
     }],{
         xaxis:{title:"Star Temperature (K)"},
         yaxis:{title:"Habitability Score"},
@@ -215,20 +213,20 @@ fetch(api+"/correlations")
 });
 
 /* ================= DB RANKING ================= */
-fetch(api+"/rank")
-.then(r=>r.json())
-.then(data=>{
-    let html=`<table>
+fetch("/rank")
+.then(r => r.json())
+.then(data => {
+    let html = `<table>
     <tr><th>Rank</th><th>Planet</th><th>Score</th></tr>`;
-    data.forEach(p=>{
-        html+=`<tr>
-        <td>${p.rank}</td>
-        <td>${p.planet_name}</td>
-        <td>${p.habitability_score.toFixed(4)}</td>
+    data.forEach(p => {
+        html += `<tr>
+            <td>${p.rank}</td>
+            <td>${p.planet_name}</td>
+            <td>${p.habitability_score.toFixed(4)}</td>
         </tr>`;
     });
-    html+=`</table>`;
-    document.getElementById("ranking").innerHTML=html;
+    html += `</table>`;
+    document.getElementById("ranking").innerHTML = html;
 });
 
 /* ================= CSV UPLOAD ================= */
@@ -242,59 +240,64 @@ async function uploadCSV(){
     const formData = new FormData();
     formData.append("file", fileInput.files[0]);
 
-    const res = await fetch(api+"/upload_csv_rank",{method:"POST",body:formData});
+    const res = await fetch("/upload_csv_rank", {
+        method: "POST",
+        body: formData
+    });
+
     const data = await res.json();
 
-    if(data.error){
-        alert(data.error);
-        return;
-    }
-
-    let html=`<table>
+    let html = `<table>
     <tr><th>Rank</th><th>Planet</th><th>Score</th></tr>`;
-    data.forEach(p=>{
-        html+=`<tr>
-        <td>${p.rank}</td>
-        <td>${p.planet_name}</td>
-        <td>${p.habitability_score.toFixed(4)}</td>
+    data.forEach(p => {
+        html += `<tr>
+            <td>${p.rank}</td>
+            <td>${p.planet_name}</td>
+            <td>${p.habitability_score.toFixed(4)}</td>
         </tr>`;
     });
-    html+=`</table>`;
+    html += `</table>`;
 
     document.getElementById("csvRanking").innerHTML = html;
     document.getElementById("csvExport").style.display = "block";
 }
 
 /* ================= EXPORT ================= */
-function exportDBExcel(){ window.location=api+"/export/excel"; }
-function exportDBPDF(){ window.location=api+"/export/pdf"; }
+function exportDBExcel(){ window.location = "/export/excel"; }
+function exportDBPDF(){ window.location = "/export/pdf"; }
 
-function exportCSVExcel(){ window.location=api+"/export/csv_excel"; }
-function exportCSVPDF(){ window.location=api+"/export/csv_pdf"; }
+function exportCSVExcel(){ window.location = "/export/csv_excel"; }
+function exportCSVPDF(){ window.location = "/export/csv_pdf"; }
 
 /* ================= STAR BACKGROUND ================= */
-const c=document.getElementById("stars"),ctx=c.getContext("2d");
-function resize(){c.width=innerWidth;c.height=innerHeight;}
-resize();onresize=resize;
+const c = document.getElementById("stars"),
+      ctx = c.getContext("2d");
 
-let stars=Array.from({length:260},()=>({
-    x:Math.random()*c.width,
-    y:Math.random()*c.height,
-    r:Math.random()*1.6,
-    s:Math.random()+.2
+function resize(){
+    c.width = innerWidth;
+    c.height = innerHeight;
+}
+resize();
+onresize = resize;
+
+let stars = Array.from({length:260}, () => ({
+    x: Math.random()*c.width,
+    y: Math.random()*c.height,
+    r: Math.random()*1.6,
+    s: Math.random()+0.2
 }));
 
 (function anim(){
     ctx.clearRect(0,0,c.width,c.height);
-    ctx.fillStyle="white";
-    stars.forEach(s=>{
+    ctx.fillStyle = "white";
+    stars.forEach(s => {
         ctx.beginPath();
         ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
         ctx.fill();
-        s.y+=s.s; 
-        if(s.y>c.height){
-            s.y=0;
-            s.x=Math.random()*c.width;
+        s.y += s.s;
+        if(s.y > c.height){
+            s.y = 0;
+            s.x = Math.random()*c.width;
         }
     });
     requestAnimationFrame(anim);

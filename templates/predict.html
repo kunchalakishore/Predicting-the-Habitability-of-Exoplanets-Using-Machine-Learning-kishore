@@ -160,13 +160,8 @@ button:hover {
         <div id="result"></div>
     </div>
 </div>
-
 <script>
-const api = "http://127.0.0.1:5000";
-
 /* ---------- PREDICT ---------- */
-
-
 async function predict() {
     const data = {
         pl_rade: +pl_rade.value,
@@ -177,7 +172,7 @@ async function predict() {
         st_rad: +st_rad.value
     };
 
-    const res = await fetch(api + "/predict", {
+    const res = await fetch("/predict", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)

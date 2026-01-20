@@ -13,7 +13,12 @@ import pandas as pd
 CSV_TOP10_CACHE = []
 
 
-app = Flask(__name__)
+app = Flask(
+    __name__,
+    template_folder="templates",
+    static_folder="static"
+)
+
 CORS(app)
 
 BASE_DIR = os.path.abspath(os.path.dirname(__file__))
